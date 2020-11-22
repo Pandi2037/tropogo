@@ -1,0 +1,297 @@
+<div class="row">
+  <div class="col-md-6 pl-5">
+    <h4>Add Course Details</h4>
+    <mat-divider></mat-divider>
+
+    <!-- Form Control Start -->
+    <form [formGroup]="courseForm" (ngSubmit)="saveCourse()">
+      <!-- Add Course Name -->
+      <h6>Course Name:</h6>
+      <mat-form-field [style.width.%]="100">
+        <mat-label>Add course name</mat-label>
+        <input
+          class="full-width"
+          placeholder="Add course name"
+          matInput
+          formControlName="courseName"
+        />
+        <mat-error
+          class="course-name"
+          *ngIf="courseForm.get('courseName').hasError('required')"
+        >
+          Add Course Name
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Previous Gallery Option -->
+      <div class="d-flex justify-content-between">
+        <div>
+          <h6>Previous Course Gallery</h6>
+        </div>
+        <div>
+          <button mat-button class="upload-btn">
+            <input
+              type="file"
+              class="form-control"
+              id="files"
+              multiple
+              (change)="detectFiles($event)"
+              accept="image/x-png,image/jpeg"
+            />
+            <mat-icon>file_upload</mat-icon>UPLOAD
+          </button>
+        </div>
+      </div>
+
+      <mat-error
+        class="course-name"
+        *ngIf="courseForm.get('photos').errors?.invalidLength"
+      >
+        More than 6 files are not allowed
+      </mat-error>
+
+      <!-- Images Displaying Location -->
+      <div class="images-preview mt-2">
+        <div class="row">
+          <div
+            class="col-md-6 col-lg-3 col-xl-2"
+            *ngFor="let photo of photos.controls; let i = index"
+          >
+            <div class="card mb-3 fit-content-width">
+              <span type="button" (click)="removePhoto(i)" class="remove-btn">
+                x
+              </span>
+              <img [src]="photo.controls.url.value" alt="Image Preview" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AirCraft Type -->
+      <h6>Aircraft Type</h6>
+      <mat-radio-group
+        aria-labelledby="example-radio-group-label"
+        class="example-radio-group"
+        formControlName="aircraftType"
+      >
+        <mat-radio-button class="pr-3" value="Multi Rotar">
+          Multi Rotar
+        </mat-radio-button>
+
+        <mat-radio-button class="pr-3" value="Fixed Wing">
+          Fixed Wing
+        </mat-radio-button>
+        <mat-error
+          class="aircraft-error-message"
+          *ngIf="courseForm.get('aircraftType').hasError('required')"
+        >
+          Select AirCraft Type
+        </mat-error>
+      </mat-radio-group>
+
+      <!-- Batch Info -->
+      <mat-accordion displayMode="flat" multi class="mat-table">
+        <!-- Header -->
+        <section matSort class="mat-elevation-z2 mat-header-row">
+          <span class="mat-header-cell">Batch</span>
+          <span class="mat-header-cell">Start Date</span>
+          <span class="mat-header-cell">End Date</span>
+          <mat-error *ngIf="courseForm.get('batchInfo').status == 'INVALID'">
+            InComplete Details
+          </mat-error>
+        </section>
+
+        <!-- Expansion panel -->
+        <mat-expansion-panel
+          formArrayName="batchInfo"
+          *ngFor="let item of batchInfo.controls; let i = index"
+          [expanded]="false"
+        >
+          <mat-expansion-panel-header
+            [formGroupName]="i"
+            class="mat-row"
+            style="border: none"
+          >
+            <!-- BatchName -->
+
+            <span class="mat-cell pt-3">
+              <mat-label>Batch {{ i + 1 }}</mat-label>
+            </span>
+
+            <!-- Start Date -->
+            <span class="mat-cell">
+              <mat-form-field
+                class="date-picker date-picker-width"
+                color="accent"
+              >
+                <mat-label>DD MMM</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="startDate"
+                  formControlName="startDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="startDate"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #startDate></mat-datepicker>
+              </mat-form-field>
+            </span>
+
+            <!-- End Date -->
+            <span class="mat-cell">
+              <mat-form-field
+                class="date-picker date-picker-width"
+                color="accent"
+              >
+                <mat-label>DD MMM</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="endDate"
+                  formControlName="endDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="endDate"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #endDate color="primary"></mat-datepicker>
+              </mat-form-field>
+            </span>
+
+            <!-- Options Button -->
+            <span class="pt-2">
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                aria-label="Example icon-button with a menu"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </span>
+            <mat-menu #menu="matMenu">
+              <!-- Reset batch -->
+              <button mat-menu-item (click)="refreshCourse(i)">
+                <mat-icon class="default-color">refresh</mat-icon>
+                <span>Reset</span>
+              </button>
+              <!-- Delete batch -->
+              <button
+                mat-menu-item
+                class="delete-color"
+                (click)="deleteCourse(i)"
+              >
+                <mat-icon class="delete-color">delete</mat-icon>
+                <span>Delete</span>
+              </button>
+            </mat-menu>
+          </mat-expansion-panel-header>
+          <div [formGroupName]="i">
+            <div>
+              <!-- Course Location -->
+              <h6>Course Location</h6>
+              <mat-form-field>
+                <mat-label>Select Location</mat-label>
+                <mat-select formControlName="courseLocation">
+                  <mat-option
+                    *ngFor="let courseLocation of courseLocation"
+                    [value]="courseLocation"
+                  >
+                    {{ courseLocation }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <!-- Course Language -->
+                <h6>Course Language</h6>
+                <mat-form-field>
+                  <mat-label>Select Language</mat-label>
+                  <mat-select multiple formControlName="courseLanguage">
+                    <mat-option
+                      *ngFor="let courseLanguage of courseLanguage"
+                      [value]="courseLanguage"
+                    >
+                      {{ courseLanguage }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <!-- Course Cost -->
+                <h6>Course Cost(Ex GST)</h6>
+                <mat-form-field>
+                  <input
+                    type="number"
+                    matInput
+                    name="value"
+                    placeholder="Rs."
+                    formControlName="courseCost"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row pl-3">
+              <!-- Is This a weekend course -->
+              <div>
+                <h6>Is this a weekend course</h6>
+              </div>
+              <div>
+                <mat-radio-group
+                  aria-labelledby="example-radio-group-label"
+                  class="example-radio-group"
+                  formControlName="isWeekEndCourse"
+                >
+                  <mat-radio-button class="pl-2" value="Y">
+                    Yes
+                  </mat-radio-button>
+
+                  <mat-radio-button class="pl-2" value="N">
+                    No
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <!-- Add New Course -->
+      <div class="row pt-3">
+        <button class="default-color" mat-button (click)="addNewCourse()">
+          <mat-icon>add_circle</mat-icon>ADD ANOTHER COURSE DATE
+        </button>
+      </div>
+
+      <!-- Course Details -->
+      <div>
+        <h6>Course Details</h6>
+        <mat-form-field class="full-width">
+          <mat-label>Add Details</mat-label>
+          <textarea matInput #message formControlName="courseDetails">
+          </textarea>
+        </mat-form-field>
+      </div>
+      <div class="mb-5">
+        <mat-error class="toolbarNav" *ngIf="batchInfo?.invalid">
+          <mat-card class="error-card">
+            <mat-icon>error</mat-icon>Fill the required information to proceed
+            <mat-icon class="float-right">close</mat-icon>
+          </mat-card>
+        </mat-error>
+      </div>
+
+      <!-- Submit & Publish -->
+      <mat-toolbar class="toolbarNav fixed-tool-bar">
+        <div class="fixed-save-btn">
+          <button mat-raised-button class="save-btn">SAVE & PUBLISH</button>
+        </div>
+      </mat-toolbar>
+    </form>
+  </div>
+
+  <div class="col-md-6">
+    <img src="assets/ic_bg.png" />
+  </div>
+</div>

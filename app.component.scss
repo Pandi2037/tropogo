@@ -1,0 +1,143 @@
+p {
+  font-family: Lato;
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+.images-preview {
+  padding: 20px 20px 0px 20px;
+  background-color: #fafafa;
+  border-radius: 4px;
+  border: 1px dashed #d9d9d9;
+  height: 80px;
+}
+
+.images-preview .remove-btn {
+  position: absolute;
+  right: 0;
+  border-radius: 0;
+  color: red;
+}
+
+.images-preview img {
+  height: 36px;
+  width: 36px;
+  object-fit: cover;
+}
+.images-preview .card-body {
+  padding: 1rem;
+}
+
+input[type="file"] {
+  opacity: 0;
+  position: absolute;
+}
+
+.mat-accordion .mat-header-row {
+  padding-left: 1.5rem;
+  padding-right: 2rem;
+  border-bottom: none;
+}
+
+.mat-expansion-panel-header.mat-row {
+  border-bottom: none;
+  height: auto !important;
+}
+
+.full-width {
+  width: -webkit-fill-available;
+}
+
+.fit-content-width {
+  width: fit-content;
+}
+
+.default-color {
+  color: green;
+}
+
+.delete-color {
+  color: red;
+}
+
+.fixed-tool-bar {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 50%;
+}
+
+.fixed-save-btn {
+  position: absolute;
+  right: 0px;
+  background-color: green;
+}
+
+.save-btn {
+  background-color: green;
+  color: white;
+}
+
+.upload-btn {
+  color: blue;
+}
+
+.aircraft-error-message {
+  right: 0px;
+  position: absolute;
+  display: inherit;
+}
+
+.course-name {
+  text-align: right;
+}
+
+.date-picker-width {
+  width: 60%;
+}
+
+.error-card {
+  color: red;
+  background: antiquewhite;
+}
+
+$mat-header-row-height: 56px;
+$mat-row-height: 48px;
+$mat-row-horizontal-padding: 24px;
+
+.mat-table {
+  display: block;
+}
+
+.mat-header-row {
+  min-height: $mat-header-row-height;
+}
+
+.mat-row {
+  min-height: $mat-row-height;
+}
+
+.mat-row,
+.mat-header-row {
+  display: flex;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  align-items: center;
+  padding: 0 $mat-row-horizontal-padding;
+  box-sizing: border-box;
+
+  &::after {
+    display: inline-block;
+    min-height: inherit;
+    content: "";
+  }
+}
+
+.mat-cell,
+.mat-header-cell {
+  flex: 1;
+  overflow: hidden;
+  word-wrap: break-word;
+}
